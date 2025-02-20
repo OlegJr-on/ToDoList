@@ -38,7 +38,7 @@ fun TaskListScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(tasks) { task ->
-                    TaskItem(task)
+                    TaskItem(task, taskViewModel)
                 }
             }
         }
