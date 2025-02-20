@@ -3,30 +3,33 @@ package com.mytodoapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
+import com.mytodoapp.data.local.TaskDatabase
+import com.mytodoapp.data.repository.TaskRepository
 import com.mytodoapp.ui.Navigation
 import com.mytodoapp.ui.theme.MyToDoAppTheme
 import com.mytodoapp.viewmodel.TaskViewModel
+import com.mytodoapp.viewmodel.TaskViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        // 🔹 Initialize Database & Repository
+        val database = TaskDatabase.getDatabase(applicationContext)
+        val repository = TaskRepository(database.taskDao())
+
+        // 🔹 Initialize ViewModel with Factory
+        val taskViewModel = ViewModelProvider(
+            this,
+            TaskViewModelFactory(repository)
+        )[TaskViewModel::class.java]
+
         setContent {
             MyToDoAppTheme {
-                val taskViewModel: TaskViewModel = viewModel()
-
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Navigation(
-                        modifier = Modifier.padding(innerPadding),
-                        taskViewModel = taskViewModel
-                    )
-                }
+                val navController = rememberNavController()
+                Navigation(navController, taskViewModel)
             }
         }
     }

@@ -1,27 +1,19 @@
 package com.mytodoapp.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.mytodoapp.ui.addtask.AddTaskScreen
 import com.mytodoapp.ui.home.HomeScreen
 import com.mytodoapp.ui.tasklist.TaskListScreen
 import com.mytodoapp.viewmodel.TaskViewModel
 
 @Composable
-fun Navigation(
-    modifier: Modifier = Modifier,
-    taskViewModel: TaskViewModel
-) {
-    val navController: NavHostController = rememberNavController()
-
+fun Navigation(navController: NavHostController, taskViewModel: TaskViewModel) {
     NavHost(
         navController = navController,
-        startDestination = "home",
-        modifier = modifier
+        startDestination = "home"
     ) {
         composable("home") { HomeScreen(navController) }
         composable("add_task") { AddTaskScreen(navController, taskViewModel) }

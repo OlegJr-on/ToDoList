@@ -1,17 +1,25 @@
 package com.mytodoapp.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.viewModelScope
+import com.mytodoapp.data.local.TaskEntity
+import com.mytodoapp.data.repository.TaskRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-class TaskViewModel : ViewModel() {
-    private val _tasks = mutableStateListOf<String>()
-    val tasks: List<String> get() = _tasks
+class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
-    fun addTask(task: String) {
-        _tasks.add(task)
+    fun getAllTasks(): Flow<List<TaskEntity>> = repository.getAllTasks()
+
+    fun removeTask(task: TaskEntity) {
+        viewModelScope.launch {
+            repository.deleteTask(task)
+        }
     }
 
-    fun removeTask(task: String) {
-        _tasks.remove(task)
+    fun addTask(taskName: String) {
+        viewModelScope.launch {
+            repository.insertTask(TaskEntity(taskName = taskName))
+        }
     }
 }
