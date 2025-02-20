@@ -15,7 +15,7 @@ fun HomeScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Welcome to MyToDoApp!", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Welcome to MyToDo!", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
 

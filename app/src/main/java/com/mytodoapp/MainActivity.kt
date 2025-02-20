@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mytodoapp.ui.Navigation
 import com.mytodoapp.ui.theme.MyToDoAppTheme
+import com.mytodoapp.viewmodel.TaskViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,10 +19,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyToDoAppTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-                    Navigation(modifier = Modifier.padding(innerPadding))
+                val taskViewModel: TaskViewModel = viewModel()
+
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Navigation(
+                        modifier = Modifier.padding(innerPadding),
+                        taskViewModel = taskViewModel
+                    )
                 }
             }
         }
